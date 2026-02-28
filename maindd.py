@@ -37,13 +37,6 @@ HOME_LON = 81.521722
 FLIGHT_ALT = 30
 
 # ==============================================================
-# 📍 SHOP LOCATION (FIXED IN DRONE CODE)
-# ==============================================================
-
-SHOP_LAT = 16.565917
-SHOP_LON = 81.521688
-
-# ==============================================================
 # HELPER FUNCTIONS
 # ==============================================================
 
@@ -87,7 +80,7 @@ def goto_location(lat, lon, speed=6):
         distance = get_distance(current, (lat, lon))
         print("Distance to target:", distance)
 
-        if distance <= 3:
+        if distance <= 5:
             print("📍 Reached Location")
             break
 
@@ -109,6 +102,13 @@ while True:
 
     time.sleep(2)
 
+# ==============================================================
+# 📍 GET SHOP COORDINATES FROM FIREBASE
+# ==============================================================
+
+shop_lat = float(order.get("shop_lat"))
+shop_lng = float(order.get("shop_lng"))
+
 # Update status
 order_ref.update({"drone_status": "Taking Off"})
 
@@ -119,11 +119,11 @@ order_ref.update({"drone_status": "Taking Off"})
 arm_and_takeoff(FLIGHT_ALT)
 
 # ==============================================================
-# 🏪 GO TO SHOP
+# 🏪 GO TO SHOP (from Firebase)
 # ==============================================================
 
 print("🏪 Flying to Shop...")
-goto_location(SHOP_LAT, SHOP_LON)
+goto_location(shop_lat, shop_lng)
 
 print("🛬 Landing at shop...")
 vehicle.mode = VehicleMode("LAND")
@@ -134,7 +134,6 @@ while vehicle.location.global_relative_frame.alt > 0.2:
 
 print("✔ Landed at shop. Waiting 60 seconds...")
 time.sleep(60)
-
 
 # ==============================================================
 # 🚀 TAKEOFF AGAIN FROM SHOP
@@ -201,7 +200,6 @@ if otp_verified:
 
 else:
     print("❌ Skipping landing, returning immediately.")
-
 
 # ==============================================================
 # 🔁 RETURN TO HOME
