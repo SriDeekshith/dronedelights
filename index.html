@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Drone Delivery App ✦ colorful</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== COLORFUL & MODERN RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  transition: all 0.2s ease;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+  background: linear-gradient(145deg, #2b1b3a 0%, #1d2b3e 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== CARD – vibrant glassmorphism ===== */
+.card, #cart, #checkoutSection, #otpSection, #successSection {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 36px;
+  padding: 28px 24px;
+  margin: 20px 0;
+  box-shadow: 0 30px 45px -20px rgba(0,0,0,0.5),
+              0 0 0 2px rgba(255, 215, 100, 0.3) inset,
+              0 0 20px #ffb34733;
+  border: 1px solid rgba(255, 245, 150, 0.5);
+  color: #1a142b;
+}
+
+/* ===== colorful headers ===== */
+h2 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f05b5b, #f9d76b, #5bc0be);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 10px rgba(255,200,100,0.3);
+}
+
+h3 {
+  font-size: 1.8rem;
+  background: linear-gradient(145deg, #ff9966, #ff5e62);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+
+h4 {
+  font-size: 1.4rem;
+  color: #3a2c4a;
+  margin: 12px 0 8px;
+}
+
+/* ===== INPUTS – fun & visible ===== */
+input, select {
+  width: 100%;
+  padding: 16px 22px;
+  margin: 10px 0 18px;
+  border: 3px solid transparent;
+  border-radius: 60px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.1), 0 0 0 2px #ffe49e inset;
+  outline: none;
+  font-weight: 500;
+  color: #1f2a3f;
+  transition: 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #ffb05c;
+  box-shadow: 0 10px 20px #fdba9a80, 0 0 0 4px #ffdd99 inset;
+  background: #fffef7;
+}
+
+/* ===== BUTTONS – candy palette ===== */
+button {
+  padding: 14px 24px;
+  margin: 8px 8px 8px 0;
+  background: linear-gradient(115deg, #ffb347, #ff8c42);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 12px 18px -8px #b45f2b, 0 3px 0 0 #b45a2e inset, 0 -2px 0 0 #ffd966 inset;
+  cursor: pointer;
+  border: 1px solid #ffdb9d;
+  transition: 0.15s;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(115deg, #ffaa33, #ff6b4a);
+  box-shadow: 0 22px 28px -12px #ff8c42, 0 3px 0 0 #cc7b32 inset;
+}
+
+button:active {
+  transform: translateY(4px);
+  box-shadow: 0 6px 12px -4px #a6531e;
+}
+
+/* shop buttons extra flair */
+.shop-btn {
+  background: linear-gradient(145deg, #5f9ea0, #2e8b57);
+  box-shadow: 0 10px 14px -6px #1f4f3f, 0 3px 0 #1d6b4c inset;
+  font-size: 1.3rem;
+  padding: 16px 24px;
+  min-width: 140px;
+  border: 1px solid #b0e57c;
+}
+
+.shop-btn:hover {
+  background: linear-gradient(145deg, #6cb4b4, #3cb371);
+}
+
+/* ===== ITEMS – colorful grid ===== */
+#itemsSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+  background: rgba(255,235,200,0.3);
+  border-radius: 70px;
+  padding: 30px 15px;
+  backdrop-filter: blur(4px);
+}
+
+.item {
+  background: rgba(250, 240, 255, 0.9);
+  backdrop-filter: blur(6px);
+  border-radius: 48px;
+  padding: 24px 15px;
+  width: 200px;
+  box-shadow: 0 25px 35px -10px #573e2b, 0 0 0 3px #fdcba0 inset;
+  border: 1px solid gold;
+  transition: all 0.25s;
+}
+
+.item:hover {
+  transform: scale(1.02) rotate(1deg);
+  box-shadow: 0 30px 40px -8px #b3562c;
+}
+
+.item img {
+  width: 140px;
+  height: 130px;
+  border-radius: 40px;
+  object-fit: cover;
+  border: 5px solid #ffcf9a;
+  background: #ffe4bc;
+  box-shadow: 0 10px 0 #965a3e;
+}
+
+.item h4 {
+  color: #3b2b1f; /* fallback color */
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 12px 0 4px;
+  background: linear-gradient(145deg, #aa4e31, #753f1f);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.item p {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ce542b;
+  background: #fff3d1;
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 40px;
+  margin: 8px 0;
+  border: 2px solid #ffb058;
+}
+
+.item button {
+  background: linear-gradient(145deg, #ef7f4f, #cc5a2a);
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  width: auto;
+  margin-top: 5px;
+}
+
+/* ===== CART SECTION ===== */
+#cart {
+  background: rgba(204,255,210,0.85);
+  backdrop-filter: blur(10px);
+  border: 4px solid #febe5e;
+}
+
+#cartItems p {
+  background: #fce3c7;
+  padding: 12px 18px;
+  border-radius: 50px;
+  margin: 8px 0;
+  font-weight: 600;
+  color: #4f2e1c;
+  border-left: 12px solid #fb8b2c;
+  box-shadow: 0 4px 8px #ebcba1;
+}
+#total {
+  font-size: 2.2rem;
+  background: linear-gradient(145deg, #dc6b3e, #dc143c);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+/* ===== checkout & otp specials ===== */
+#checkoutSection select, #otpSection input {
+  background: #fffae3;
+  border: 3px solid #ffb26e;
+}
+
+#generatedOtp {
+  background: #2c3e50;
+  color: #f9ffb0;
+  font-size: 3rem;
+  letter-spacing: 10px;
+  padding: 10px 30px;
+  border-radius: 80px;
+  display: inline-block;
+  margin: 20px 0;
+  border: 5px dashed #ffbf69;
+  text-shadow: 0 0 15px gold;
+}
+
+/* ===== SUCCESS animation ===== */
+#successSection {
+  background: rgba(194, 255, 185, 0.9);
+  border: 6px solid #96e6b3;
+  text-align: center;
+}
+#successSection h2 {
+  font-size: 2.8rem;
+  -webkit-text-fill-color: #3c763d;
+  background: none;
+  color: #1c7e3a;
+  animation: bounce 1.2s infinite;
+}
+@keyframes bounce {
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-12px); }
+}
+
+/* ===== responsive finesse ===== */
+@media (max-width: 600px) {
+  .container { padding: 8px; }
+  h2 { font-size: 1.9rem; }
+  .shop-btn { 
+    display: block; 
+    width: 100%;
+    margin: 12px 0;
+  }
+  .item { width: 100%; max-width: 280px; }
+  button { width: 100%; margin-left: 0; }
+  #itemsSection { padding: 15px 5px; }
+  .card, #cart { padding: 20px 12px; }
+}
+
+@media (max-width: 380px) {
+  h2 { font-size: 1.6rem; }
+  .item img { width: 120px; height: 110px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- USER FORM -->
+<div id="userForm" class="card">
+    <h2>✈️ Drone Delivery</h2>
+    <input type="text" id="name" placeholder="Your Name 📛"><br>
+    <input type="text" id="phone" placeholder="Phone Number 📱"><br>
+    <button onclick="startApp()">✨ Let's fly ✨</button>
+</div>
+
+<!-- SHOP SECTION -->
+<div id="shopSection" style="display:none;" class="card">
+    <h2>🍰 choose shop</h2>
+    <button class="shop-btn" onclick="openShop('bakery')">🥖 Bakery</button>
+    <button class="shop-btn" onclick="openShop('stationary')">✏️ Stationary</button>
+    <button class="shop-btn" onclick="openShop('biryanis')">🍗 Biryanis</button>
+    <br>
+    <button onclick="goBackToUser()">🔙 back</button>
+</div>
+
+<!-- ITEMS SECTION (dynamic) -->
+<div id="itemsSection"></div>
+
+<!-- CART -->
+<div id="cart" style="display:none;">
+    <h3>🛒 Your cart</h3>
+    <div id="cartItems"></div>
+    <h4>Total: ₹ <span id="total">0</span></h4>
+    <button onclick="checkout()">💸 Checkout</button>
+    <button onclick="goBackToShop()">⬅️ back to shops</button>
+</div>
+
+<!-- CHECKOUT SECTION (hostel) -->
+<div id="checkoutSection" style="display:none;" class="card">
+    <h3>🏠 Select Hostel</h3>
+    <select id="hostelType" onchange="loadHostels()">
+        <option value="">🚹 / 🚺 pick type</option>
+        <option value="boys">Boys Hostel</option>
+        <option value="girls">Girls Hostel</option>
+    </select>
+
+    <select id="hostelNames"></select>
+
+    <button onclick="buyNow()">🚁 buy & fly drone</button>
+    <button onclick="goBackToCart()">🔙 back</button>
+</div>
+
+<!-- OTP SECTION -->
+<div id="otpSection" style="display:none;" class="card">
+    <h3>🔐 your secret OTP</h3>
+    <div style="text-align: center;"><span id="generatedOtp"></span></div>
+
+    <div id="verifySection" style="display:none;">
+        <input type="text" id="enteredOtp" placeholder="🔢 enter OTP to land">
+        <button onclick="verifyOtp()">🛬 send & land drone</button>
+    </div>
+
+    <button onclick="goBackToCheckout()">🔙 back</button>
+</div>
+
+<!-- SUCCESS SECTION -->
+<div id="successSection" style="display:none;" class="card">
+    <h2>✅ ORDER LANDING</h2>
+    <p style="font-size: 1.6rem;">✨ drone is landing at your hostel ✨</p>
+    <button onclick="goHome()">🏠 Go home</button>
+</div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+// 🔥 Your Firebase Config (updated with your credentials)
+const firebaseConfig = {
+  apiKey: "AIzaSyDjbZMViOIi5oHjx_H0gjYKHJepMOgol-s",
+  authDomain: "drone-delights.firebaseapp.com",
+  databaseURL: "https://drone-delights-default-rtdb.firebaseio.com",
+  projectId: "drone-delights",
+  storageBucket: "drone-delights.firebasestorage.app",
+  messagingSenderId: "84072930294",
+  appId: "1:84072930294:web:256bff039378d891fcc5d7",
+  measurementId: "G-HG8Y5DQQCX"
+};
+
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+
+// ------ ORIGINAL LOGIC (untouched) ------
+let cart = [];
+let total = 0;
+let selectedShop = "";
+let shopLat = 0;
+let shopLng = 0;
+let hostelLat = 0;
+let hostelLng = 0;
+let otp = "";
+
+const shopCoordinates = {
+    bakery: {lat: 16.566834, lng: 81.521767},
+    stationary: {lat: 16.566834, lng: 81.521767},
+    biryanis: {lat: 16.566834, lng: 81.521767}
+};
+
+const hostels = {
+    boys: {
+        CVR: {lat:16.567752, lng:81.518974},
+        testing: {lat:16.565946, lng:81.521744}
+        
+    },
+    girls: {
+        seetha_Audi: {lat:16.567981, lng:81.522960},
+        sahithi: {lat:16.567981, lng:81.522960}
+    }
+};
+
+function startApp(){
+    document.getElementById("userForm").style.display="none";
+    document.getElementById("shopSection").style.display="block";
+}
+
+function openShop(shop){
+    selectedShop = shop;
+    shopLat = shopCoordinates[shop].lat;
+    shopLng = shopCoordinates[shop].lng;
+
+    document.getElementById("itemsSection").innerHTML="";
+    document.getElementById("cart").style.display="block";
+
+    let itemsHTML = "<button onclick='goBackToShop()' style='background:#9b8c7c; margin-bottom:15px;'>🔙 Back to shops</button><br>";
+
+    for(let i=1;i<=4;i++){
+        // You can replace the image URLs below with your own image links
+        // For example: for bakery items, use your actual bakery product images
+        // let imageUrl = "https://via.placeholder.com/150/FFDAB9/000?text=🍕+" + shop + "+" + i;
+        let imageUrl = "https://via.placeholder.com/150";
+        // You can customize image URLs per shop and item like this:
+        if(shop === 'bakery' && i === 1) imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUQ-IG296A136YJS2SVxIeX-redTxU0qoCZQ&s';
+        if(shop === 'bakery' && i === 2) imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzgLxm4HzqlE_g4eQT1xfGccAbHliExQK_7A&s';
+        if(shop === 'bakery' && i ===3) imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsIOJC32pxjzMiDpqUd5pj3op9v5axBmeKCg&s';
+        if(shop === 'bakery' && i === 4) imageUrl = 'https://indiashopping.io/cdn/shop/files/Best_5_Star_Chocolate_From_All_India_3_1024x.jpg?v=1741296731';
+        if(shop === 'stationary' && i === 1) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        if(shop === 'stationary' && i === 2) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        if(shop === 'stationary' && i === 3) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        if(shop === 'stationary' && i === 4) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        if(shop === 'biryanis' && i === 1) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        if(shop === 'biryanis' && i === 2) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        if(shop === 'biryanis' && i === 3) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        if(shop === 'biryanis' && i === 4) imageUrl = 'YOUR_STATIONARY_ITEM1_URL';
+        // etc.
+        
+        itemsHTML += `
+        <div class="item">
+            <img src="${imageUrl}" alt="${shop} item ${i}">
+            <h4>${shop} Item ${i}</h4>
+            <p>₹ ${100*i}</p>
+            <button onclick="addToCart('${shop} Item ${i}',${100*i})">➕ add</button>
+        </div>
+        `;
+    }
+
+    document.getElementById("itemsSection").innerHTML = itemsHTML;
+}
+
+function addToCart(name,price){
+    cart.push({name,price});
+    total += price;
+    document.getElementById("total").innerText = total;
+    document.getElementById("cartItems").innerHTML += `<p>✨ ${name} - ₹${price}</p>`;
+}
+
+function checkout(){
+    document.getElementById("checkoutSection").style.display="block";
+}
+
+function loadHostels(){
+    let type = document.getElementById("hostelType").value;
+    let dropdown = document.getElementById("hostelNames");
+    dropdown.innerHTML="<option value=''>-- choose hostel --</option>";
+
+    if(!type) return;
+    for(let hostel in hostels[type]){
+        let option = document.createElement("option");
+        option.value = hostel;
+        option.text = hostel;
+        dropdown.appendChild(option);
+    }
+}
+
+function buyNow(){
+    let hostelType = document.getElementById("hostelType").value;
+    let hostelName = document.getElementById("hostelNames").value;
+    
+    if(!hostelType || !hostelName){
+        alert("Please select hostel type and name");
+        return;
+    }
+
+    hostelLat = hostels[hostelType][hostelName].lat;
+    hostelLng = hostels[hostelType][hostelName].lng;
+
+    otp = Math.floor(1000 + Math.random()*9000);
+
+    database.ref("orders/current_order").set({
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        cart: cart,
+        total: total,
+        shop: selectedShop,
+        shop_lat: shopLat,
+        shop_lng: shopLng,
+        hostel: hostelName,
+        hostel_lat: hostelLat,
+        hostel_lng: hostelLng,
+        otp: otp,
+        drone_status: "Not Dispatched"
+    });
+
+    document.getElementById("checkoutSection").style.display="none";
+    document.getElementById("otpSection").style.display="block";
+    document.getElementById("generatedOtp").innerText = otp;
+
+    listenDroneStatus();
+}
+
+function listenDroneStatus(){
+    database.ref("orders/current_order/drone_status")
+    .on("value", function(snapshot){
+        if(snapshot.val() == "Drone Reached"){
+            document.getElementById("verifySection").style.display="block";
+        }
+    });
+}
+
+function verifyOtp(){
+    let entered = document.getElementById("enteredOtp").value;
+
+    if(entered == otp){
+        database.ref("orders/current_order").update({
+            drone_status: "Land"
+        });
+
+        document.getElementById("otpSection").style.display="none";
+        document.getElementById("successSection").style.display="block";
+
+    } else {
+        alert("❌ Wrong OTP! try again");
+    }
+}
+
+function goBackToUser(){
+    document.getElementById("shopSection").style.display="none";
+    document.getElementById("userForm").style.display="block";
+}
+
+function goBackToShop(){
+    document.getElementById("itemsSection").innerHTML="";
+    document.getElementById("cart").style.display="none";
+}
+
+function goBackToCart(){
+    document.getElementById("checkoutSection").style.display="none";
+}
+
+function goBackToCheckout(){
+    document.getElementById("otpSection").style.display="none";
+    document.getElementById("checkoutSection").style.display="block";
+}
+
+function goHome(){
+    location.reload();
+}
+</script>
+</body>
+</html>
